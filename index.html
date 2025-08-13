@@ -139,11 +139,9 @@
     <li>4. Selecciona <strong>Sí</strong> para continuar o <strong>No</strong> para cancelar.</li>
   </ul>
 
-  <p>Si prefieres, también puedes solicitar la baja enviando un correo a: <br>
-    <a href="mailto:asistenciatecnicostec@gmail.com">asistenciatecnicostec@gmail.com</a>
-  </p>
+<p>Si prefieres, también puedes pedir que borremos tus datos aquí:</p>
 
-  <form id="eliminarForm" action="https://formspree.io/f/TU_CODIGO_FORMSPREE" method="POST">
+  <form id="eliminarForm" action="https://formspree.io/f/tu_codigo_formspree" method="POST">
     <input
       type="email"
       name="email"
@@ -151,15 +149,15 @@
       required
       autocomplete="email"
     />
-    <input type="hidden" name="tipo" value="Solicitud de baja de cuenta" />
-    <button type="submit">Solicitar baja</button>
+    <!-- Este campo oculto envía el email fijo del destinatario -->
+    <input type="hidden" name="_replyto" value="asistenciatecnicostec@gmail.com" />
+    <button type="submit">Solicitar</button>
   </form>
 
   <p class="confirmation" id="confirmationMsg">¡Solicitud enviada! Revisa tu correo para confirmar.</p>
 </div>
 
 <script>
-  // Mostrar mensaje de confirmación sin recargar página
   const form = document.getElementById('eliminarForm');
   const confirmationMsg = document.getElementById('confirmationMsg');
 
