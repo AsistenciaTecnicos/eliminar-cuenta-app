@@ -80,6 +80,7 @@ button {
   cursor: pointer;
   font-size: 1.2rem;
   padding: 18px 0;
+  width: 100%; /* Ocupa todo el ancho del contenedor */
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   animation: buttonEntrance 0.5s ease forwards;
 }
@@ -163,20 +164,17 @@ form.addEventListener('submit', function(event) {
   })
   .then(response => {
     if (response.ok) {
-      // Animación de salida contenedor
       container.style.animation = 'fadeOutDown 0.5s forwards';
       setTimeout(() => { container.style.display = 'none'; }, 500);
 
-      // Mostrar mensaje de confirmación
       confirmationMsg.style.display = 'block';
       setTimeout(() => { confirmationMsg.style.opacity = 1; }, 50);
 
       form.reset();
-      // Desaparece automáticamente después de 5 segundos
+
       setTimeout(() => {
         confirmationMsg.style.opacity = 0;
         setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
-        // Volver a mostrar contenedor con animación de entrada
         container.style.display = 'block';
         container.style.animation = 'fadeInUp 0.8s ease forwards';
       }, 5000);
