@@ -63,15 +63,23 @@ ul.steps {
   font-weight: 600;
   margin-bottom: 30px;
   box-shadow: inset 0 0 12px #99bbff;
-  text-align: center; /* centrado de pasos */
+  text-align: center; 
+  list-style: none; /* quitar puntos */
+  counter-reset: step-counter;
 }
 
-ul.steps li { margin-bottom: 12px; }
+ul.steps li {
+  margin-bottom: 12px;
+  counter-increment: step-counter;
+}
 
-/* CENTRADO DE FORMULARIO */
+ul.steps li::before {
+  content: counter(step-counter) " "; /* solo el número */
+  font-weight: 700;
+}
+
 form { display: flex; flex-direction: column; align-items: center; }
 
-/* INPUTS Y BOTÓN */
 input[type="email"], input[type="password"], button {
   width: 100%;
   max-width: 400px;
@@ -108,10 +116,14 @@ button:active { transform: scale(0.97); }
   margin-top: 20px;
   text-align: center;
   font-size: 1rem;
-  color: #ffffff; /* blanco */
-  display: none;
+  color: #ffffff; 
   font-weight: 600;
   opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .errorMsg {
@@ -121,7 +133,6 @@ button:active { transform: scale(0.97); }
   display: none;
 }
 
-/* Animaciones */
 @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 @keyframes fadeOutDown { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(30px); } }
 @keyframes buttonEntrance { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -133,16 +144,15 @@ button:active { transform: scale(0.97); }
   <h1>Eliminar tu cuenta del Técnico en Calidad</h1>
 
   <ul class="steps">
-    <li>1. Abre la aplicación <strong>Técnico en Calidad</strong>.</li>
-    <li>2. Toca el botón <strong>"Eliminar Cuenta"</strong> en inicio de sesión.</li>
-    <li>3. Llena tus datos correctamente.</li>
-    <li>4. Aparecerá un mensaje de confirmación.</li>
-    <li>5. Selecciona <strong>Sí</strong> para continuar.</li>
+    <li>Abre la aplicación <strong>Técnico en Calidad</strong>.</li>
+    <li>Toca el botón <strong>"Eliminar Cuenta"</strong> en inicio de sesión.</li>
+    <li>Llena tus datos correctamente.</li>
+    <li>Aparecerá un mensaje de confirmación.</li>
+    <li>Selecciona <strong>Sí</strong> para continuar.</li>
   </ul>
 
   <p>Si prefieres, solicita que borremos tus datos aquí:</p>
 
-  <!-- FORMULARIO CON CORREO Y CONTRASEÑA -->
   <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
     <input type="password" name="password" placeholder="Tu contraseña" required autocomplete="current-password" />
@@ -174,7 +184,6 @@ button:active { transform: scale(0.97); }
 
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Credenciales correctas, enviar formulario
       const formData = new FormData(form);
       fetch(form.action, {
         method: form.method,
@@ -183,21 +192,18 @@ button:active { transform: scale(0.97); }
       })
       .then(response => {
         if(response.ok){
-          container.style.animation = 'fadeOutDown 0.5s forwards';
-
-          // Mostrar mensaje de confirmación durante animación (entre 3s y 4.5s)
+          // Mostrar mensaje antes de desaparecer el cuadro
+          confirmationMsg.style.opacity = 1;
           confirmationMsg.style.display = 'block';
-          confirmationMsg.style.opacity = 0;
-          setTimeout(() => { confirmationMsg.style.opacity = 1; }, 3500);
 
+          container.style.animation = 'fadeOutDown 0.5s forwards';
           form.reset();
 
           setTimeout(() => {
             confirmationMsg.style.opacity = 0;
-            setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
             container.style.display = 'block';
             container.style.animation = 'fadeInUp 0.8s ease forwards';
-          }, 5000);
+          }, 3000); // duración total
         }
       });
     })
