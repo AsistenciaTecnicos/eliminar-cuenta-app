@@ -5,6 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Técnico en Calidad</title>
 
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD9g63vlae7tdmC5QCbZDz_nattCaoagb0",
+    authDomain: "fundateccalidad-155c4.firebaseapp.com",
+    projectId: "fundateccalidad-155c4",
+    storageBucket: "fundateccalidad-155c4.firebasestorage.app",
+    messagingSenderId: "498357053508",
+    appId: "1:498357053508:web:25100503c913bded02f411",
+    measurementId: "G-V5B788PMW8"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  window.auth = getAuth(app);
+</script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
@@ -33,15 +52,8 @@ body {
 }
 .container:hover { transform: translateY(-5px); }
 
-h1 {
-  margin-top: 0;
-  font-weight: 700;
-  text-align: center;
-  color: #001f4d;
-}
-
+h1 { margin-top: 0; font-weight: 700; text-align: center; color: #001f4d; }
 p { font-size: 1rem; line-height: 1.5; margin-bottom: 25px; text-align: center; }
-
 ul.steps {
   background: #cce0ff;
   border-radius: 10px;
@@ -51,15 +63,10 @@ ul.steps {
   margin-bottom: 30px;
   box-shadow: inset 0 0 12px #99bbff;
 }
-
 ul.steps li { margin-bottom: 12px; }
 
 /* CENTRADO DE FORMULARIO */
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+form { display: flex; flex-direction: column; align-items: center; }
 
 /* INPUTS Y BOTÓN */
 input[type="email"], input[type="password"], button {
@@ -73,10 +80,7 @@ input[type="email"], input[type="password"], button {
   transition: all 0.3s ease;
 }
 
-input[type="email"], input[type="password"] {
-  border: 2px solid #001f4d;
-}
-
+input[type="email"], input[type="password"] { border: 2px solid #001f4d; }
 input[type="email"]:focus, input[type="password"]:focus {
   outline: none;
   border-color: #0044cc;
@@ -94,15 +98,8 @@ button {
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   animation: buttonEntrance 0.5s ease forwards;
 }
-
-button:hover {
-  background: linear-gradient(90deg, #002266, #0044cc);
-  transform: translateY(-3px);
-}
-
-button:active {
-  transform: scale(0.97);
-}
+button:hover { background: linear-gradient(90deg, #002266, #0044cc); transform: translateY(-3px); }
+button:active { transform: scale(0.97); }
 
 .confirmation {
   margin-top: 20px;
@@ -115,21 +112,17 @@ button:active {
   transition: opacity 0.5s ease;
 }
 
+.errorMsg {
+  margin-top: 10px;
+  color: red;
+  font-weight: 600;
+  display: none;
+}
+
 /* Animaciones */
-@keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeOutDown {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(30px); }
-}
-
-@keyframes buttonEntrance {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes fadeOutDown { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(30px); } }
+@keyframes buttonEntrance { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -156,49 +149,61 @@ button:active {
     <input type="hidden" name="_captcha" value="false" />
 
     <button type="submit">Solicitar</button>
+    <p class="errorMsg" id="errorMsg">Correo o contraseña incorrectos.</p>
   </form>
 
   <p class="confirmation" id="confirmationMsg">¡Solicitud enviada! Revisa tu correo para confirmar.</p>
 </div>
 
-<script>
-const form = document.getElementById('eliminarForm');
-const confirmationMsg = document.getElementById('confirmationMsg');
-const container = document.getElementById('container');
+<script type="module">
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const formData = new FormData(form);
+  const form = document.getElementById('eliminarForm');
+  const confirmationMsg = document.getElementById('confirmationMsg');
+  const container = document.getElementById('container');
+  const errorMsg = document.getElementById('errorMsg');
+  const auth = window.auth;
 
-  fetch(form.action, {
-    method: form.method,
-    body: formData,
-    headers: { 'Accept': 'application/json' },
-  })
-  .then(response => {
-    if (response.ok) {
-      container.style.animation = 'fadeOutDown 0.5s forwards';
-      setTimeout(() => { container.style.display = 'none'; }, 500);
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const email = form.email.value;
+    const password = form.password.value;
 
-      confirmationMsg.style.display = 'block';
-      setTimeout(() => { confirmationMsg.style.opacity = 1; }, 50);
+    // Validar credenciales con Firebase
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Credenciales correctas, enviar formulario
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' },
+      })
+      .then(response => {
+        if(response.ok){
+          container.style.animation = 'fadeOutDown 0.5s forwards';
+          setTimeout(() => { container.style.display = 'none'; }, 500);
 
-      form.reset();
+          confirmationMsg.style.display = 'block';
+          setTimeout(() => { confirmationMsg.style.opacity = 1; }, 50);
 
-      setTimeout(() => {
-        confirmationMsg.style.opacity = 0;
-        setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
-        container.style.display = 'block';
-        container.style.animation = 'fadeInUp 0.8s ease forwards';
-      }, 5000);
-    } else {
-      alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
-    }
-  })
-  .catch(() => {
-    alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
+          form.reset();
+
+          setTimeout(() => {
+            confirmationMsg.style.opacity = 0;
+            setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
+            container.style.display = 'block';
+            container.style.animation = 'fadeInUp 0.8s ease forwards';
+          }, 5000);
+        }
+      });
+    })
+    .catch((error) => {
+      // Mostrar error si correo o contraseña no existen
+      errorMsg.style.display = 'block';
+      setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
+    });
   });
-});
 </script>
 
 </body>
