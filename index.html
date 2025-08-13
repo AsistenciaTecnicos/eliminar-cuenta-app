@@ -65,8 +65,10 @@ ul.steps {
 }
 ul.steps li { margin-bottom: 12px; }
 
+/* CENTRADO DE FORMULARIO */
 form { display: flex; flex-direction: column; align-items: center; }
 
+/* INPUTS Y BOTÓN */
 input[type="email"], input[type="password"], button {
   width: 100%;
   max-width: 400px;
@@ -103,11 +105,10 @@ button:active { transform: scale(0.97); }
   margin-top: 20px;
   text-align: center;
   font-size: 1rem;
-  color: green;
+  color: white; /* Color blanco */
   display: none;
   font-weight: 600;
   opacity: 0;
-  transition: opacity 0.5s ease;
 }
 
 .errorMsg {
@@ -117,6 +118,7 @@ button:active { transform: scale(0.97); }
   display: none;
 }
 
+/* Animaciones */
 @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 @keyframes fadeOutDown { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(30px); } }
 @keyframes buttonEntrance { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -130,13 +132,14 @@ button:active { transform: scale(0.97); }
   <ul class="steps">
     <li>1. Abre la aplicación <strong>Técnico en Calidad</strong>.</li>
     <li>2. Toca el botón <strong>"Eliminar Cuenta"</strong> en inicio de sesión.</li>
-    <li>   Llena tus datos</li>
-    <li>3. Aparecerá un mensaje de confirmación.</li>
-    <li>4. Selecciona <strong>Sí</strong> para continuar.</li>
+    <li>3. Llena tus datos</li>
+    <li>4. Aparecerá un mensaje de confirmación.</li>
+    <li>5. Selecciona <strong>Sí</strong> para continuar.</li>
   </ul>
 
   <p>Si prefieres, solicita que borremos tus datos aquí:</p>
 
+  <!-- FORMULARIO CON CORREO Y CONTRASEÑA -->
   <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
     <input type="password" name="password" placeholder="Tu contraseña" required autocomplete="current-password" />
@@ -166,8 +169,10 @@ button:active { transform: scale(0.97); }
     const email = form.email.value;
     const password = form.password.value;
 
+    // Validar credenciales con Firebase
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
+      // Credenciales correctas, enviar formulario
       const formData = new FormData(form);
       fetch(form.action, {
         method: form.method,
@@ -176,14 +181,11 @@ button:active { transform: scale(0.97); }
       })
       .then(response => {
         if(response.ok){
+          // Mostrar mensaje antes de desaparecer
+          confirmationMsg.style.display = 'block';
+          confirmationMsg.style.opacity = 1;
+
           container.style.animation = 'fadeOutDown 0.5s forwards';
-
-          setTimeout(() => {
-            // Mostrar mensaje en medio de animación
-            confirmationMsg.style.display = 'block';
-            confirmationMsg.style.opacity = 1;
-          }, 250);
-
           setTimeout(() => { container.style.display = 'none'; }, 500);
 
           form.reset();
@@ -198,6 +200,7 @@ button:active { transform: scale(0.97); }
       });
     })
     .catch((error) => {
+      // Mostrar error si correo o contraseña no existen
       errorMsg.style.display = 'block';
       setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
     });
