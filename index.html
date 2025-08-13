@@ -97,6 +97,15 @@
     background-color: #3366cc; /* azul más claro */
   }
 
+  a {
+    color: #003366;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
   .confirmation {
     margin-top: 20px;
     text-align: center;
@@ -124,13 +133,15 @@
   <h1>Eliminar tu cuenta del Técnico en Calidad</h1>
 
   <ul class="steps">
-    <li>1. Abre la aplicación <strong>FundaTEC Calidad</strong> en tu dispositivo.</li>
+    <li>1. Abre la aplicación <strong>Técnico en Calidad</strong> en tu dispositivo.</li>
     <li>2. En la pantalla de inicio de sesión, toca el botón <strong>"Eliminar Cuenta"</strong>.</li>
     <li>3. Aparecerá un mensaje de confirmación:<br><em>"¿Estás seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer."</em></li>
     <li>4. Selecciona <strong>Sí</strong> para continuar o <strong>No</strong> para cancelar.</li>
   </ul>
 
-  <p>Si prefieres, también puedes solicitar la eliminación aquí:</p>
+  <p>Si prefieres, también puedes solicitar la baja enviando un correo a: <br>
+    <a href="mailto:asistenciatecnicostec@gmail.com">asistenciatecnicostec@gmail.com</a>
+  </p>
 
   <form id="eliminarForm" action="https://formspree.io/f/TU_CODIGO_FORMSPREE" method="POST">
     <input
@@ -140,8 +151,8 @@
       required
       autocomplete="email"
     />
-    <input type="hidden" name="tipo" value="Solicitud de eliminación de cuenta" />
-    <button type="submit">Solicitar eliminación</button>
+    <input type="hidden" name="tipo" value="Solicitud de baja de cuenta" />
+    <button type="submit">Solicitar baja</button>
   </form>
 
   <p class="confirmation" id="confirmationMsg">¡Solicitud enviada! Revisa tu correo para confirmar.</p>
@@ -179,6 +190,3 @@
 
 </body>
 </html>
-
-
-
