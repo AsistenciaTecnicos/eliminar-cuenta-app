@@ -54,16 +54,26 @@ ul.steps {
 
 ul.steps li { margin-bottom: 12px; }
 
-input, button {
+/* CENTRADO DE FORMULARIO */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra horizontalmente los elementos */
+}
+
+input[type="email"], button {
+  width: 100%; /* ocupa todo el ancho disponible */
+  max-width: 400px; /* limita ancho máximo */
+  margin: 10px 0; /* espacio entre elementos */
   padding: 15px 20px;
   font-size: 1rem;
   border-radius: 10px;
+  text-align: center; /* centra el texto dentro del input */
   transition: all 0.3s ease;
 }
 
 input[type="email"] {
   border: 2px solid #001f4d;
-  margin-bottom: 20px;
 }
 
 input[type="email"]:focus {
@@ -80,7 +90,6 @@ button {
   cursor: pointer;
   font-size: 1.2rem;
   padding: 18px 0;
-  width: 100%; /* Ocupa todo el ancho del contenedor */
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   animation: buttonEntrance 0.5s ease forwards;
 }
