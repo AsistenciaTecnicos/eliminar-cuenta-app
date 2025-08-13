@@ -6,122 +6,189 @@
 <title>Técnico en Calidad</title>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-  body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, #001f4d, #003366);
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-  }
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #001533, #002266);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
 
-  .container {
-    background: #fff;
-    color: #333;
-    border-radius: 12px;
-    max-width: 500px;
-    width: 100%;
-    padding: 30px 40px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    animation: fadeInUp 0.8s ease forwards;
-  }
+.container {
+  background: #fff;
+  color: #333;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 100%;
+  padding: 35px 45px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  animation: fadeInUp 0.8s ease forwards;
+  transition: transform 0.3s ease;
+}
+.container:hover { transform: translateY(-5px); }
 
-  h1 {
-    margin-top: 0;
-    font-weight: 700;
-    text-align: center;
-    color: #003366;
-  }
+h1 {
+  margin-top: 0;
+  font-weight: 700;
+  text-align: center;
+  color: #001f4d;
+}
 
-  p { font-size: 1rem; line-height: 1.5; margin-bottom: 25px; text-align: center; }
+p { font-size: 1rem; line-height: 1.5; margin-bottom: 25px; text-align: center; }
 
-  ul.steps {
-    background: #e6f0ff;
-    border-radius: 8px;
-    padding: 15px 20px;
-    color: #003366;
-    font-weight: 600;
-    margin-bottom: 30px;
-    box-shadow: inset 0 0 10px #99bbff;
-  }
+ul.steps {
+  background: #cce0ff;
+  border-radius: 10px;
+  padding: 20px 25px;
+  color: #001f4d;
+  font-weight: 600;
+  margin-bottom: 30px;
+  box-shadow: inset 0 0 12px #99bbff;
+}
 
-  ul.steps li { margin-bottom: 12px; }
+ul.steps li { margin-bottom: 12px; }
 
-  input, button {
-    padding: 15px 12px;
-    font-size: 1rem;
-    border-radius: 8px;
-  }
+input, button {
+  padding: 15px 20px;
+  font-size: 1rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
 
-  input[type="email"] {
-    border: 2px solid #003366;
-    margin-bottom: 20px;
-  }
+input[type="email"] {
+  border: 2px solid #001f4d;
+  margin-bottom: 20px;
+}
 
-  input[type="email"]:focus {
-    outline: none;
-    border-color: #3366cc;
-    box-shadow: 0 0 8px rgba(51,102,204,0.5);
-  }
+input[type="email"]:focus {
+  outline: none;
+  border-color: #0044cc;
+  box-shadow: 0 0 10px rgba(0,68,204,0.5);
+}
 
-  button {
-    background-color: #003366;
-    color: white;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease;
-  }
+button {
+  background: linear-gradient(90deg, #001f4d, #003366);
+  color: white;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 18px 0;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: buttonEntrance 0.5s ease forwards;
+}
 
-  button:hover { background-color: #3366cc; }
+button:hover {
+  background: linear-gradient(90deg, #002266, #0044cc);
+  transform: translateY(-3px);
+}
 
-  .confirmation {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 1rem;
-    color: green;
-    display: none;
-    font-weight: 600;
-  }
+button:active {
+  transform: scale(0.97);
+}
 
-  @keyframes fadeInUp {
-    0% { opacity: 0; transform: translateY(30px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
+.confirmation {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1rem;
+  color: green;
+  display: none;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOutDown {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(30px); }
+}
+
+@keyframes buttonEntrance {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="container">
   <h1>Eliminar tu cuenta del Técnico en Calidad</h1>
 
   <ul class="steps">
-    <li>1. Abre la aplicación <strong>Técnico en Calidad</strong> en tu dispositivo.</li>
-    <li>2. En la pantalla de inicio de sesión, toca el botón <strong>"Eliminar Cuenta"</strong>.</li>
-    <li>3. Aparecerá un mensaje de confirmación:<br><em>"¿Estás seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer."</em></li>
-    <li>4. Selecciona <strong>Sí</strong> para continuar o <strong>No</strong> para cancelar.</li>
+    <li>1. Abre la aplicación <strong>Técnico en Calidad</strong>.</li>
+    <li>2. Toca el botón <strong>"Eliminar Cuenta"</strong> en inicio de sesión.</li>
+    <li>3. Aparecerá un mensaje de confirmación.</li>
+    <li>4. Selecciona <strong>Sí</strong> para continuar.</li>
   </ul>
 
-  <p>Si prefieres, también puedes pedir que borremos tus datos aquí:</p>
+  <p>Si prefieres, solicita que borremos tus datos aquí:</p>
 
   <!-- FORMULARIO CON FORMSUBMIT -->
-  <form action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
+  <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
     <input type="hidden" name="Mensaje" value="Deseo eliminar mi cuenta de la aplicación Técnico en Calidad" />
     <input type="hidden" name="_subject" value="Solicitud de eliminación de cuenta - Técnico en Calidad" />
     <input type="hidden" name="_captcha" value="false" />
-
     <button type="submit">Solicitar</button>
   </form>
 
   <p class="confirmation" id="confirmationMsg">¡Solicitud enviada! Revisa tu correo para confirmar.</p>
 </div>
+
+<script>
+const form = document.getElementById('eliminarForm');
+const confirmationMsg = document.getElementById('confirmationMsg');
+const container = document.getElementById('container');
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+
+  fetch(form.action, {
+    method: form.method,
+    body: formData,
+    headers: { 'Accept': 'application/json' },
+  })
+  .then(response => {
+    if (response.ok) {
+      // Animación de salida contenedor
+      container.style.animation = 'fadeOutDown 0.5s forwards';
+      setTimeout(() => { container.style.display = 'none'; }, 500);
+
+      // Mostrar mensaje de confirmación
+      confirmationMsg.style.display = 'block';
+      setTimeout(() => { confirmationMsg.style.opacity = 1; }, 50);
+
+      form.reset();
+      // Desaparece automáticamente después de 5 segundos
+      setTimeout(() => {
+        confirmationMsg.style.opacity = 0;
+        setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
+        // Volver a mostrar contenedor con animación de entrada
+        container.style.display = 'block';
+        container.style.animation = 'fadeInUp 0.8s ease forwards';
+      }, 5000);
+    } else {
+      alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
+    }
+  })
+  .catch(() => {
+    alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
+  });
+});
+</script>
 
 </body>
 </html>
