@@ -38,12 +38,7 @@
     color: #003366;
   }
 
-  p {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 25px;
-    text-align: center;
-  }
+  p { font-size: 1rem; line-height: 1.5; margin-bottom: 25px; text-align: center; }
 
   ul.steps {
     background: #e6f0ff;
@@ -55,22 +50,17 @@
     box-shadow: inset 0 0 10px #99bbff;
   }
 
-  ul.steps li {
-    margin-bottom: 12px;
-  }
+  ul.steps li { margin-bottom: 12px; }
 
-  form {
-    display: flex;
-    flex-direction: column;
+  input, button {
+    padding: 15px 12px;
+    font-size: 1rem;
+    border-radius: 8px;
   }
 
   input[type="email"] {
-    padding: 15px 12px;
-    font-size: 1rem;
     border: 2px solid #003366;
-    border-radius: 8px;
     margin-bottom: 20px;
-    transition: border-color 0.3s ease;
   }
 
   input[type="email"]:focus {
@@ -83,17 +73,13 @@
     background-color: #003366;
     color: white;
     font-weight: 600;
-    padding: 15px 0;
     border: none;
-    border-radius: 8px;
     cursor: pointer;
     font-size: 1.1rem;
     transition: background-color 0.3s ease;
   }
 
-  button:hover {
-    background-color: #3366cc;
-  }
+  button:hover { background-color: #3366cc; }
 
   .confirmation {
     margin-top: 20px;
@@ -125,14 +111,8 @@
   <p>Si prefieres, también puedes pedir que borremos tus datos aquí:</p>
 
   <!-- FORMULARIO CON FORMSUBMIT -->
-  <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
-    <input
-      type="email"
-      name="email"
-      placeholder="Tu correo electrónico"
-      required
-      autocomplete="email"
-    />
+  <form action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
+    <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
     <input type="hidden" name="Mensaje" value="Deseo eliminar mi cuenta de la aplicación Técnico en Calidad" />
     <input type="hidden" name="_subject" value="Solicitud de eliminación de cuenta - Técnico en Calidad" />
     <input type="hidden" name="_captcha" value="false" />
@@ -142,41 +122,6 @@
 
   <p class="confirmation" id="confirmationMsg">¡Solicitud enviada! Revisa tu correo para confirmar.</p>
 </div>
-
-<script>
-const form = document.getElementById('eliminarForm');
-const confirmationMsg = document.getElementById('confirmationMsg');
-
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  const formData = new FormData(form);
-
-  fetch(form.action, {
-    method: form.method,
-    body: formData,
-    headers: { 'Accept': 'application/json' },
-  })
-  .then(response => {
-    if (response.ok) {
-      confirmationMsg.style.display = 'block';
-      confirmationMsg.style.opacity = 1;
-      form.reset();
-
-      setTimeout(() => {
-        confirmationMsg.style.transition = 'opacity 1s';
-        confirmationMsg.style.opacity = 0;
-        setTimeout(() => { confirmationMsg.style.display = 'none'; }, 1000);
-      }, 5000);
-    } else {
-      alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
-    }
-  })
-  .catch(() => {
-    alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
-  });
-});
-</script>
 
 </body>
 </html>
