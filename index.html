@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Técnico en Calidad</title> <!-- Cambiado -->
+<title>Técnico en Calidad</title>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
@@ -11,7 +11,6 @@
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    /* Fondo con azul oscuro degradado */
     background: linear-gradient(135deg, #001f4d, #003366);
     color: #fff;
     display: flex;
@@ -36,8 +35,7 @@
     margin-top: 0;
     font-weight: 700;
     text-align: center;
-    /* Color azul oscuro */
-    color: #003366; /* antes #4a148c */
+    color: #003366;
   }
 
   p {
@@ -48,10 +46,10 @@
   }
 
   ul.steps {
-    background: #e6f0ff; /* Cambio de lavanda a azul claro */
+    background: #e6f0ff;
     border-radius: 8px;
     padding: 15px 20px;
-    color: #003366; /* azul oscuro */
+    color: #003366;
     font-weight: 600;
     margin-bottom: 30px;
     box-shadow: inset 0 0 10px #99bbff;
@@ -69,7 +67,7 @@
   input[type="email"] {
     padding: 15px 12px;
     font-size: 1rem;
-    border: 2px solid #003366; /* azul oscuro */
+    border: 2px solid #003366;
     border-radius: 8px;
     margin-bottom: 20px;
     transition: border-color 0.3s ease;
@@ -77,12 +75,12 @@
 
   input[type="email"]:focus {
     outline: none;
-    border-color: #3366cc; /* azul más claro al enfocar */
+    border-color: #3366cc;
     box-shadow: 0 0 8px rgba(51,102,204,0.5);
   }
 
   button {
-    background-color: #003366; /* azul oscuro */
+    background-color: #003366;
     color: white;
     font-weight: 600;
     padding: 15px 0;
@@ -94,16 +92,7 @@
   }
 
   button:hover {
-    background-color: #3366cc; /* azul más claro */
-  }
-
-  a {
-    color: #003366;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
+    background-color: #3366cc;
   }
 
   .confirmation {
@@ -112,18 +101,12 @@
     font-size: 1rem;
     color: green;
     display: none;
+    font-weight: 600;
   }
 
-  /* Animations */
   @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
@@ -139,18 +122,21 @@
     <li>4. Selecciona <strong>Sí</strong> para continuar o <strong>No</strong> para cancelar.</li>
   </ul>
 
-<p>Si prefieres, también puedes pedir que borremos tus datos aquí:</p>
+  <p>Si prefieres, también puedes pedir que borremos tus datos aquí:</p>
 
-  <form id="eliminarForm" action="https://formspree.io/f/tu_codigo_formspree" method="POST">
+  <!-- FORMULARIO CON FORMSUBMIT -->
+  <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input
       type="email"
-      name="email"
+      name="Correo del solicitante"
       placeholder="Tu correo electrónico"
       required
       autocomplete="email"
     />
-    <!-- Este campo oculto envía el email fijo del destinatario -->
-    <input type="hidden" name="_replyto" value="asistenciatecnicostec@gmail.com" />
+    <input type="hidden" name="Mensaje" value="Deseo eliminar mi cuenta de la aplicación Técnico en Calidad" />
+    <input type="hidden" name="_subject" value="Solicitud de eliminación de cuenta - Técnico en Calidad" />
+    <input type="hidden" name="_captcha" value="false" />
+
     <button type="submit">Solicitar</button>
   </form>
 
@@ -158,32 +144,39 @@
 </div>
 
 <script>
-  const form = document.getElementById('eliminarForm');
-  const confirmationMsg = document.getElementById('confirmationMsg');
+const form = document.getElementById('eliminarForm');
+const confirmationMsg = document.getElementById('confirmationMsg');
 
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
 
-    const formData = new FormData(form);
-    fetch(form.action, {
-      method: form.method,
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
-      },
-    })
-    .then(response => {
-      if (response.ok) {
-        confirmationMsg.style.display = 'block';
-        form.reset();
-      } else {
-        alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
-      }
-    })
-    .catch(() => {
+  const formData = new FormData(form);
+
+  fetch(form.action, {
+    method: form.method,
+    body: formData,
+    headers: { 'Accept': 'application/json' },
+  })
+  .then(response => {
+    if (response.ok) {
+      confirmationMsg.style.display = 'block';
+      confirmationMsg.style.opacity = 1;
+      form.reset();
+
+      // Desaparece automáticamente después de 5 segundos
+      setTimeout(() => {
+        confirmationMsg.style.transition = 'opacity 1s';
+        confirmationMsg.style.opacity = 0;
+        setTimeout(() => { confirmationMsg.style.display = 'none'; }, 1000);
+      }, 5000);
+    } else {
       alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
-    });
+    }
+  })
+  .catch(() => {
+    alert('Hubo un error al enviar la solicitud. Intenta nuevamente.');
   });
+});
 </script>
 
 </body>
