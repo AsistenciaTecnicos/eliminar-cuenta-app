@@ -128,7 +128,7 @@
   <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input
       type="email"
-      name="Correo del solicitante"
+      name="email"
       placeholder="Tu correo electrónico"
       required
       autocomplete="email"
@@ -163,7 +163,6 @@ form.addEventListener('submit', function(event) {
       confirmationMsg.style.opacity = 1;
       form.reset();
 
-      // Desaparece automáticamente después de 5 segundos
       setTimeout(() => {
         confirmationMsg.style.transition = 'opacity 1s';
         confirmationMsg.style.opacity = 0;
